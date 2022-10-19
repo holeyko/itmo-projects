@@ -24,6 +24,11 @@ public class CaptchaFilter extends HttpFilter {
     protected void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpSession session = request.getSession();
         if (session.getAttribute(this.CAPTCHA_PASSED_ATTRIBUTE_TEXT) != null) {
+            if (request.getRequestURI().equals("/captcha/check") || request.getRequestURI().equals("/captcha/refresh")) {
+                String lastUri = (String) session.getAttribute(this.LAST_URI_ATTRIBUTE_TEXT);
+                response.setStatus(303);
+                response.setHeader("Location", lastUri);
+            }
             chain.doFilter(request, response);
         } else if (request.getMethod().equals("GET")) {
             session.setAttribute(this.LAST_URI_ATTRIBUTE_TEXT, request.getRequestURI());
