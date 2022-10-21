@@ -20,7 +20,6 @@ struct file *filealloc(void) {
   struct file *f;
 
   if ((f = bd_malloc(sizeof(struct file))) == 0) {
-    release(&f->lock);
     return 0;
   }
 
@@ -40,8 +39,6 @@ struct file *filedup(struct file *f) {
 
 // Close file f.  (Decrement ref count, close when reaches 0.)
 void fileclose(struct file *f) {
-  struct file ff;
-
   acquire(&f->lock);
   if (f->ref < 1) panic("fileclose");
   if (--f->ref > 0) {
@@ -49,17 +46,16 @@ void fileclose(struct file *f) {
     return;
   }
 
-  ff = *f;
-  bd_free(f);
   release(&f->lock);
-
-  if (ff.type == FD_PIPE) {
-    pipeclose(ff.pipe, ff.writable);
-  } else if (ff.type == FD_INODE || ff.type == FD_DEVICE) {
+  if (f->type == FD_PIPE) {
+    pipeclose(f->pipe, f->writable);
+  } else if (f->type == FD_INODE || f->type == FD_DEVICE) {
     begin_op();
-    iput(ff.ip);
+    iput(f->ip);
     end_op();
   }
+
+  bd_free(f);
 }
 
 // Get metadata about file f.
