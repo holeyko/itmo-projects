@@ -1,5 +1,4 @@
 package ru.itmo.wp.web;
-
 import freemarker.template.*;
 import ru.itmo.wp.web.exception.NotFoundException;
 import ru.itmo.wp.web.exception.RedirectException;
@@ -21,6 +20,7 @@ import java.util.stream.Collectors;
 public class FrontServlet extends HttpServlet {
     private static final String BASE_PACKAGE = FrontServlet.class.getPackage().getName() + ".page";
     private static final String DEFAULT_ACTION = "action";
+    private static final List<String> VALID_LANGUAGES = List.of("ru", "en");
 
     private Configuration sourceConfiguration;
     private Configuration targetConfiguration;
@@ -54,7 +54,7 @@ public class FrontServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String lang = request.getParameter("lang");
-        if (lang != null && lang.length() == 2 && isLatinLetters(lang)) {
+        if (lang != null && lang.length() == 2 && isLatinLetters(lang) && VALID_LANGUAGES.contains(lang)) {
             getServletContext().setAttribute("lang", lang);
         }
 
@@ -90,8 +90,10 @@ public class FrontServlet extends HttpServlet {
         Method method = null;
         for (Method classMethod : pageClass.getDeclaredMethods()) {
             if (classMethod.getName().equals(route.getAction())) {
+                if (method != null) {
+                    throw new ServletException("");
+                }
                 method = classMethod;
-                break;
             }
         }
 
@@ -100,6 +102,7 @@ public class FrontServlet extends HttpServlet {
         }
 
         Map<String, Object> view = new HashMap<>();
+
         List<Object> passedArguments = new ArrayList<>();
         for (Class<?> type : method.getParameterTypes()) {
             if (type.equals(Map.class)) {

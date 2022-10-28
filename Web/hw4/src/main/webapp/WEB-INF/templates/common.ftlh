@@ -37,7 +37,7 @@
         </div>
         <div class="enter-or-register-box">
             <#if user??>
-                ${userLinkWrapper(user, user.name, false)}
+                <@userLinkWrapper user, user.name, false/>
                 |
                 <a href="/logout">Logout</a>
             <#else>
@@ -75,7 +75,7 @@
                 <div class="header">Post #${post.id}</div>
                 <div class="body"><@p.main post false/></div>
                 <div class="footer">
-                    ${postLinkWrapper(post, "View all")}
+                    <@postLinkWrapper post, "View all"/>
                 </div>
             </section>
         </#list>
@@ -106,34 +106,35 @@
     <#return filtred/>
 </#function>
 
-<#function linkWrapper ref inner class="">
+<#macro linkWrapper ref inner class="">
 <#-- @ftlvariable name="ref" type="java.lang.String" -->
-<#-- @ftlvariable name="inner" type="java.lang.String" -->
 <#-- @ftlvariable name="class" type="java.lang.String" -->
     <#if ref?? && ref?hasContent>
-        <#local link><a class="${class}" href="${ref}">${inner}</a></#local>
-        <#return link/>
+        <a class="${class}" href="${ref}">${inner}</a>
+    <#else>
+        ${inner}
     </#if>
-    <#return inner/>
-</#function>
+</#macro>
 
-<#function userLinkWrapper user inner withColor=true>
+<#macro userLinkWrapper user inner withColor=true>
 <#-- @ftlvariable name="user" type="ru.itmo.web.hw4.model.User" -->
 <#-- @ftlvariable name="withColor" type="java.lang.Boolean" -->
     <#if user?? && user?hasContent>
         <#if nameOnly?? || withColor == false>
-            <#return linkWrapper("/user?nameOnly&handle=${user.handle}", inner, "user_link")/>
+            <@linkWrapper "/user?nameOnly&handle=${user.handle}", inner, "user_link"/>
         <#else>
-            <#return linkWrapper("/user?handle=${user.handle}", inner, "user_link " + user.color.colorName)/>
+            <@linkWrapper "/user?handle=${user.handle}", inner, "user_link " + user.color.colorName/>
         </#if>
+    <#else>
+        ${inner}
     </#if>
-    <#return inner>
-</#function>
+</#macro>
 
-<#function postLinkWrapper post inner>
+<#macro postLinkWrapper post inner>
 <#-- @ftlvariable name="post" type="ru.itmo.web.hw4.model.Post" -->
     <#if post?? && post?hasContent>
-        <#return linkWrapper("/post?post_id=${post.id}", inner)/>
+        <@linkWrapper "/post?post_id=${post.id}", inner/>
+    <#else>
+        ${inner}
     </#if>
-    <#return inner>
-</#function>
+</#macro>

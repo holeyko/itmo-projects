@@ -22,7 +22,7 @@
                 <tr>
                 <#list thData as thCell>
                     <#if thCell.valueName == "handle">
-                        <td>${c.userLinkWrapper(u, u.handle)}</td>
+                        <td><@c.userLinkWrapper u, u.handle/></td>
                     <#else>
                         <td>${u[thCell.valueName]}</td>
                     </#if>

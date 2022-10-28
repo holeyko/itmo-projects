@@ -43,9 +43,9 @@
 </#macro>
 
 <#macro header post>
-    <div class="title">${c.postLinkWrapper(post, post.title)}</div>
+    <div class="title"><@c.postLinkWrapper post, post.title/></div>
     <#assign u = c.findBy(users, "id", post.userId)/>
-    <div class="information">Author: ${c.userLinkWrapper(u, u.name)}</div>
+    <div class="information">Author: <@c.userLinkWrapper u, u.name/></div>
 </#macro>
 
 <#macro main post isFull>

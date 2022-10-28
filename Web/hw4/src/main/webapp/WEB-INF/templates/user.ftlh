@@ -3,25 +3,25 @@
 <#import "./common.ftlh" as c>
 
 <@c.page>
-    <#assign u></#assign>
+    <#assign user></#assign>
     <#if handle??>
-        <#assign u = c.findBy(users, "handle", handle)!/>
+        <#assign user = c.findBy(users, "handle", handle)!/>
     <#elseIf user_id??>
-        <#assign u = c.findBy(users, "id", user_id)!/>
+        <#assign user = c.findBy(users, "id", user_id)!/>
     </#if>
 
-    <#if u?hasContent>
+    <#if user?hasContent>
         <div class="user_box">
             <div class="user_info">
-                <h2>${c.userLinkWrapper(u, u.name)}</h2>
+                <h2><@c.userLinkWrapper user, user.name/></h2>
                 <ul>
-                    <li>Id: ${u.id}</li>
-                    <li>Handle: ${u.handle}</li>
-                    <li>Name: ${u.name}</li>
-                    <li>Count posts: ${c.linkWrapper(
-                        "/post?user_id=${u.id}",
-                        (c.filterBy(posts, "userId", u.id)?size)
-                        )}</li>
+                    <li>Id: ${user.id}</li>
+                    <li>Handle: ${user.handle}</li>
+                    <li>Name: ${user.name}</li>
+                    <li>Count posts: <@c.linkWrapper
+                        "/post?user_id=${user.id}",
+                        (c.filterBy(posts, "userId", user.id)?size)
+                        /></li>
                 </ul>
             </div>
             <img class="user_pic" src="/img/user-pic.jpg" alt="User picture">
@@ -34,24 +34,26 @@
         <#elseIf user_id??>
             <#assign key = "id" val = user_id/>
         </#if>
-        <@slider key val/>
+        <@sliders key val/>
     <#else>
         No such user
     </#if>
 </@c.page>
 
-<#macro slider key value>
+<#macro sliders key value>
     <div class="user_slider">
-        <div class="arrow">
-            <#assign prevu = shiftUser(users, c.findBy(users, key, value), -1)!>
-            <#local leftarrow>&larr;</#local>
-            ${c.userLinkWrapper(prevu, leftarrow)}
-        </div>
-        <div class="arrow">
-            <#assign nextu = shiftUser(users, c.findBy(users, key, value), 1)!>
-            <#local rightarrow>&rarr;</#local>
-            ${c.userLinkWrapper(nextu, rightarrow)}
-        </div>
+        <#local leftarrow>&larr;</#local>
+        <@slider key, value, leftarrow, -1/>
+
+        <#local rightarrow>&rarr;</#local>
+        <@slider key, value, rightarrow, 1/>
+    </div>
+</#macro>
+
+<#macro slider key value inner step>
+    <div class="arrow">
+        <#assign shiftedUser = shiftUser(users, c.findBy(users, key, value), step)!>
+        <@c.userLinkWrapper shiftedUser, inner/>
     </div>
 </#macro>
 

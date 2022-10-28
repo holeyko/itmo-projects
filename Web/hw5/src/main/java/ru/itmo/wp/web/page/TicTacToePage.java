@@ -1,7 +1,6 @@
 package ru.itmo.wp.web.page;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
 public class TicTacToePage {
@@ -16,27 +15,33 @@ public class TicTacToePage {
         view.put("state", state);
     }
 
-    private void onMove(HttpServletRequest request, Map<String, Object> view) {
+    private void onMove(HttpServletRequest request, Map<String, Object> view) throws NumberFormatException {
         State state = (State) request.getServletContext().getAttribute("state");
 
         if (state == null) {
-            // TODO: write smth
+            action(request, view);
+        }
+        view.put("state", state);
+
+        if (state.getPhase() != Phase.RUNNING) {
             return;
         }
 
         for (Map.Entry<String, String[]> e : request.getParameterMap().entrySet()) {
             String cellStart = "cell_";
             if (e.getKey().startsWith(cellStart)) {
-                if (e.getKey().length() != 7) {
-                    // TODO: Do smth
+                if (e.getKey().length() != cellStart.length() + 2) {
+                    return;
                 }
 
                 int row, column;
+                char r = e.getKey().charAt(cellStart.length());
+                char c = e.getKey().charAt(cellStart.length() + 1);
+
                 try {
-                    row = Character.digit(e.getKey().charAt(cellStart.length()), 10);
-                    column = Character.digit(e.getKey().charAt(cellStart.length() + 1), 10);
-                } catch (NumberFormatException exception) {
-                    //TODO: do smth
+                    row = Character.digit(r, 10);
+                    column = Character.digit(c, 10);
+                } catch (IllegalArgumentException ignored) {
                     return;
                 }
 
@@ -48,9 +53,8 @@ public class TicTacToePage {
     }
 
     private void newGame(HttpServletRequest request, Map<String, Object> view) {
-        State state = new State();
-        request.getServletContext().setAttribute("state", state);
-        view.put("state", state);
+        request.getServletContext().removeAttribute("state");
+        action(request, view);
     }
 
     public class State {
@@ -70,10 +74,12 @@ public class TicTacToePage {
         }
 
         private void makeMove(int row, int column) {
-            cells[row][column] = crossesMove ? "X" : "O";
-            ++countFilled;
-            updatePhase();
-            crossesMove = !crossesMove;
+            if (row >= 0 && row < size && column >= 0 && column < size && cells[row][column] == null) {
+                cells[row][column] = crossesMove ? "X" : "O";
+                ++countFilled;
+                updatePhase();
+                crossesMove = !crossesMove;
+            }
         }
 
         private void updatePhase() {
@@ -81,7 +87,7 @@ public class TicTacToePage {
                 for (int column = 0; column < size; ++column) {
                     for (int dr = -1; dr <= 1; ++dr) {
                         for (int dc = -1; dc <= 1; ++dc) {
-                            if (checkWinFromCell(row, column, dr, dc)){
+                            if (checkWinFromCell(row, column, dr, dc)) {
                                 phase = crossesMove ? Phase.WON_X : Phase.WON_O;
                                 return;
                             }
@@ -106,7 +112,7 @@ public class TicTacToePage {
             int curSequenceSize = cellValue == null ? 0 : 1;
 
             while (0 <= curRow + dr && curRow + dr <= size - 1 &&
-                    0 <= curColumn + dc && curColumn + dc <= size - 1)   {
+                    0 <= curColumn + dc && curColumn + dc <= size - 1) {
                 curRow += dr;
                 curColumn += dc;
 

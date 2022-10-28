@@ -77,6 +77,10 @@ public class FreemarkerServlet extends HttpServlet {
                    try {
                        long value = Long.parseLong(e.getValue()[0]);
                        data.put(e.getKey(), value);
+
+                       if (e.getKey().equals("logged_user_id")) {
+                           request.getSession().setAttribute("logged_user_id", value);
+                       }
                    } catch (NumberFormatException ignored) {}
                 } else {
                     data.put(e.getKey(), e.getValue()[0]);
@@ -85,6 +89,9 @@ public class FreemarkerServlet extends HttpServlet {
         }
 
         data.put("uri", request.getRequestURI());
+        if (request.getSession().getAttribute("logged_user_id") != null) {
+            data.put("logged_user_id", request.getSession().getAttribute("logged_user_id"));
+        }
         DataUtil.addData(request, data);
 
         return data;
