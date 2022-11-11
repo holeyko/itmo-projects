@@ -1,0 +1,8 @@
+.talk {
+    margin-bottom: 2rem;
+}
+
+.talk #text {
+    height: 100px;
+    width: 100%;
+}

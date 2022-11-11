@@ -1,0 +1,5 @@
+[#ftl]
+[#-- @implicitly included --]
+[#-- @ftlvariable name="talks" type="ru.itmo.wp.model.domain.Talk[]" --]
+[#-- @ftlvariable name="user" type="ru.itmo.wp.model.domain.User" --]
+[#-- @ftlvariable name="users" type="ru.itmo.wp.model.domain.User[]" --]
