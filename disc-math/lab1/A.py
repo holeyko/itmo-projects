@@ -15,7 +15,7 @@ def solve():
             if vertex[k] == '1':
                 graph[i].add(k)
 
-    for k in range(n * (n - 1)):
+    for k in range(4 * n):
         if not exist_edge(graph, queue[0], queue[1]):
             i = 2
             while not exist_edge(graph, queue[0], queue[i]) or not exist_edge(graph, queue[1], queue[i + 1]):

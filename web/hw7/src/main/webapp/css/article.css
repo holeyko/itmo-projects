@@ -1,0 +1,31 @@
+:root {
+    --caption-color: #3B5998;
+    --info-text-color: #888;
+    --main-body-border-left: 4px solid #B9B9B9;
+}
+
+.article #text {
+    height: 200px;
+    width: 100%;
+}
+
+.articles article {
+    position: relative;
+    margin-bottom: 2rem;
+}
+
+.articles article .title {
+    font-size: 1.5rem !important;
+    color: var(--caption-color);
+    font-weight: bold;
+}
+
+.articles article .information {
+    margin: 0.25rem 0 0 0;
+    color: var(--info-text-color);
+}
+
+.articles article .body {
+    border-left: var(--main-body-border-left);
+    padding: 0 0 0 1rem;
+}

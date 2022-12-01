@@ -1,0 +1,1 @@
+<component name="ProjectRunConfigurationManager">\n <configuration default="false" name="kernel" type="CLion_Remote" version="1" remoteCommand="tcp::26000">\n <debugger toolchainName="xv6-toolchain" />\n <method v="2" />\n </configuration>\n </component>
