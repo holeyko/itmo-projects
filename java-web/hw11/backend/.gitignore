@@ -1,0 +1,11 @@
+### IDEA ###
+.idea/
+out/
+
+
+### Maven ###
+target/
+
+
+### Credentials ###
+profile.properties

@@ -1,0 +1,22 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+../include/calc.h
+string
+-
+
+/home/holeyko/Main/C++/calc-trig-holeyko/src/calc.cpp
+calc.h
+/home/holeyko/Main/C++/calc-trig-holeyko/src/calc.h
+cctype
+-
+cmath
+-
+iostream
+-
+

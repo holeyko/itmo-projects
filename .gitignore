@@ -1,0 +1,14 @@
+### Credentials ###
+removegit.py
+data.sql
+profile.properties
+
+### Unimportant ###
+removegit.py
+node_modules
+
+### Maven ###
+target/
+
+### IDEA ###
+.idea

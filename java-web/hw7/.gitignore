@@ -1,0 +1,8 @@
+### IDEA ###
+.idea/
+
+### Maven ###
+target/
+
+### Confidence ###
+profile.properties

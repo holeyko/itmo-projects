@@ -1,0 +1,7 @@
+.write-comment {
+   margin-bottom: 20px;
+}
+
+.write-comment .field textarea {
+   min-height: 8rem;
+}
