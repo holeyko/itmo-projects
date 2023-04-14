@@ -1,0 +1,3 @@
+C:/Users/vryab/Main/IT/ITMO/math-logic/cmake-build-debug/CMakeFiles/math_logic.dir
+C:/Users/vryab/Main/IT/ITMO/math-logic/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/vryab/Main/IT/ITMO/math-logic/cmake-build-debug/CMakeFiles/rebuild_cache.dir
