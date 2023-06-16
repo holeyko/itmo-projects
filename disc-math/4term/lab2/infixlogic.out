@@ -1,0 +1,24 @@
+2
+S 0 _ -> startEndClose 0 > _ ^
+S 1 _ -> startEndClose 1 > _ ^
+S a _ -> startEndClose a > _ ^
+S o _ -> startEndClose o > _ ^
+S _ _ -> startBeginClose ) < _ ^
+
+startBeginClose 0 _ -> startBeginClose 0 < _ ^
+startBeginClose 1 _ -> startBeginClose 1 < _ ^
+startBeginClose a _ -> startBeginClose a < _ ^
+startBeginClose o _ -> startBeginClose o < _ ^
+startBeginClose _ _ -> deepClose ( > _ ^
+
+deepClose 0 _ -> deepClose 0 > _ ^
+deepClose 1 _ -> deepClose 1 > _ ^
+deepClose o _ -> deepClose o > _ ^
+deepClose a _ -> deepClose a > _ ^
+deepClose r _ -> deepClose r > _ ^
+deepClose ( _ -> deepClose ( > _ ^
+deepClose ) _ -> evAnd ) < _ ^
+
+evAnd h _ -> evAnd h < _ ^
+evAnd 0 _ -> evAnd 0 < 0 ^
+evAnd 1 _ -> evAnd 0 < 1 ^

@@ -23,6 +23,14 @@ public class ListIPTest<P extends ListIP> extends ScalarIPTest<P> {
     }
 
     @Test
+    public void test12_sleepPerformance() throws InterruptedException {
+        testPerformance("filter", MAX_THREADS, 5, 0, 1.5, (instance, threads, values) ->
+                instance.filter(threads, values, v -> sleep(v % 3 == 1)));
+        testPerformance("map", MAX_THREADS, 5, 0, 1.5, (instance, threads, values) ->
+                instance.map(threads, values, v -> sleep(v + 10)));
+    }
+
+    @Test
     public void test51_join() throws InterruptedException {
         testS(
                 (data, ignore) -> data.map(Object::toString).collect(Collectors.joining()),

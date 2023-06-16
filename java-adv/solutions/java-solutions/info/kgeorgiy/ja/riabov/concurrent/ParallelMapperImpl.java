@@ -26,6 +26,11 @@ public class ParallelMapperImpl implements ParallelMapper {
                         try {
                             while (!Thread.interrupted()) {
                                 getTask().run();
+                                try {
+                                    getTask().run();
+                                } catch (RuntimeException ignored) {
+                                    // Ignore exception
+                                }
                             }
                         } catch (InterruptedException ignored) {
                             // Ignore exception
@@ -94,7 +99,6 @@ public class ParallelMapperImpl implements ParallelMapper {
         if (exception.get(0) != null) {
             throw exception.get(0);
         }
-
 
         return results;
     }

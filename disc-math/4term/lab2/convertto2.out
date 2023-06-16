@@ -1,0 +1,72 @@
+start: s
+accept: ac
+reject: rj
+blank: _
+
+s 0 -> s 0 >
+s 1 -> s 1 >
+s 2 -> s 2 >
+s _ -> firstZero | >
+
+firstZero _ -> backZero 0 <
+
+backZero | -> rm | <
+
+rm 0 -> rm x <
+rm 1 -> prefAdd 0 >
+rm 2 -> prefAdd 1 >
+rm _ -> prefRev _ >
+
+prefAdd 0 -> prefAdd 0 >
+prefAdd 1 -> prefAdd 1 >
+prefAdd 2 -> prefAdd 2 >
+prefAdd x -> prefAdd 2 >
+prefAdd | -> add | >
+
+add 0 -> prefRm 1 <
+add 1 -> add 0 >
+add _ -> prefRm 1 <
+
+prefRm 0 -> prefRm 0 <
+prefRm 1 -> prefRm 1 <
+prefRm | -> rm | <
+
+prefRev x -> prefRev _ >
+prefRev | -> border _ >
+
+border 0 -> border 0 >
+border 1 -> border 1 >
+border _ -> rv | <
+
+rv 0 -> prefAp0 x >
+rv 1 -> prefAp1 x >
+rv x -> rv x <
+rv _ -> clean _ >
+
+prefAp0 0 -> prefAp0 0 >
+prefAp0 1 -> prefAp0 1 >
+prefAp0 x -> prefAp0 x >
+prefAp0 | -> ap0 | >
+
+prefAp1 0 -> prefAp1 0 >
+prefAp1 1 -> prefAp1 1 >
+prefAp1 x -> prefAp1 x >
+prefAp1 | -> ap1 | >
+
+ap0 0 -> ap0 0 >
+ap0 1 -> ap0 1 >
+ap0 _ -> back 0 <
+
+ap1 0 -> ap1 0 >
+ap1 1 -> ap1 1 >
+ap1 _ -> back 1 <
+
+back 0 -> back 0 <
+back 1 -> back 1 <
+back | -> rv | <
+
+clean x -> clean _ >
+clean | -> clean _ >
+clean 0 -> clean _ >
+clean 1 -> ac 1 ^
+clean _ -> ac 0 ^

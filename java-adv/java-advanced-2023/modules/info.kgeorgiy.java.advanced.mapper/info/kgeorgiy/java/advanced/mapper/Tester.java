@@ -13,6 +13,7 @@ public final class Tester {
         new BaseTester()
                 .add("scalar", ScalarMapperTest.class)
                 .add("list", ListMapperTest.class)
+                .add("advanced", AdvancedMapperTest.class)
                 .run(args);
     }
 }

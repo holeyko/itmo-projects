@@ -1,0 +1,159 @@
+2
+S 0 _ -> S 0 ^ | ^
+S 1 _ -> S 1 ^ | ^
+S 0 | -> S r > | ^
+S r | -> S r > | ^
+S h | -> skWord h > | ^
+S x | -> skWord x ^ | ^
+S 1 | -> skWord 1 > | ^
+S | | -> finishNum | ^ | ^
+S _ | -> finishNum _ ^ | ^
+
+skWord 1 | -> skWord 1 > | ^
+skWord 0 | -> skWord 0 > | ^
+skWord h | -> skWord h > | ^
+skWord x | -> skWord 1 > | ^
+skWord | | -> S | > | ^
+skWord _ | -> checkNums _ < | ^
+
+finishNum | | -> checkZero | ^ | >
+finishNum | 0 -> finishNum | ^ 0 >
+finishNum | 1 -> finishNum | ^ 1 >
+finishNum | _ -> prepCp | ^ | <
+finishNum _ | -> checkZero _ ^ | >
+finishNum _ 0 -> finishNum _ ^ 0 >
+finishNum _ 1 -> finishNum _ ^ 1 >
+finishNum _ _ -> prepCp _ ^ | <
+
+checkZero | _ -> finishNum | ^ 0 >
+checkZero | 0 -> finishNum | ^ 0 >
+checkZero | 1 -> finishNum | ^ 1 >
+checkZero _ _ -> finishNum _ ^ 0 >
+checkZero _ 0 -> finishNum _ ^ 0 >
+checkZero _ 1 -> finishNum _ ^ 1 >
+
+prepCp | 0 -> prepCp | ^ 0 <
+prepCp | 1 -> prepCp | ^ 1 <
+prepCp | | -> cp | ^ | >
+prepCp | a -> cp | ^ a >
+prepCp | b -> cp | ^ b >
+prepCp _ 0 -> prepCp _ ^ 0 <
+prepCp _ 1 -> prepCp _ ^ 1 <
+prepCp _ | -> cp _ ^ | >
+prepCp _ a -> cp _ ^ a >
+prepCp _ b -> cp _ ^ b >
+
+cp | 0 -> prepCp0 | ^ a >
+cp | 1 -> prepCp1 | ^ b >
+cp | | -> setHandled | < | ^
+cp _ 0 -> prepCp0 _ ^ a >
+cp _ 1 -> prepCp1 _ ^ b >
+cp _ | -> setHandled _ < | ^
+
+prepCp0 | 0 -> prepCp0 | ^ 0 >
+prepCp0 | 1 -> prepCp0 | ^ 1 >
+prepCp0 | | -> cp0 | ^ | >
+prepCp0 _ 0 -> prepCp0 _ ^ 0 >
+prepCp0 _ 1 -> prepCp0 _ ^ 1 >
+prepCp0 _ | -> cp0 _ ^ | >
+
+prepCp1 | 0 -> prepCp1 | ^ 0 >
+prepCp1 | 1 -> prepCp1 | ^ 1 >
+prepCp1 | | -> cp1 | ^ | >
+prepCp1 _ 0 -> prepCp1 _ ^ 0 >
+prepCp1 _ 1 -> prepCp1 _ ^ 1 >
+prepCp1 _ | -> cp1 _ ^ | >
+
+cp0 | 0 -> cp0 | ^ 0 >
+cp0 | 1 -> cp0 | ^ 1 >
+cp0 | _ -> backCp | ^ 0 <
+cp0 _ 0 -> cp0 _ ^ 0 >
+cp0 _ 1 -> cp0 _ ^ 1 >
+cp0 _ _ -> backCp _ ^ 0 <
+
+cp1 | 0 -> cp1 | ^ 0 >
+cp1 | 1 -> cp1 | ^ 1 >
+cp1 | _ -> backCp | ^ 1 <
+cp1 _ 0 -> cp1 _ ^ 0 >
+cp1 _ 1 -> cp1 _ ^ 1 >
+cp1 _ _ -> backCp _ ^ 1 <
+
+backCp | 0 -> backCp | ^ 0 <
+backCp | 1 -> backCp | ^ 1 <
+backCp | | -> prepCp | ^ | <
+backCp _ 0 -> backCp _ ^ 0 <
+backCp _ 1 -> backCp _ ^ 1 <
+backCp _ | -> prepCp _ ^ | <
+
+setHandled r | -> setHandled h < | ^
+setHandled | | -> skWord | > | ^
+setHandled _ | -> skWord _ > | ^
+
+checkNums h | -> checkNums h < | ^
+checkNums | | -> checkNums | < | ^
+checkNums 0 | -> endNums 0 > | ^
+checkNums 1 | -> endNums 1 > | ^
+checkNums r | -> endNums r > | ^
+checkNums _ | -> cleanNums _ > | ^
+
+endNums h | -> endNums h > | ^
+endNums | | -> endNums | > | ^
+endNums _ | -> add _ ^ | ^
+
+add _ | -> add _ ^ | >
+add _ 0 -> ret _ ^ 1 <
+add _ 1 -> add _ ^ 0 >
+add _ _ -> ret _ ^ 1 <
+
+ret _ 0 -> ret _ ^ 0 <
+ret _ 1 -> ret _ ^ 1 <
+ret _ | -> red _ < | ^
+
+red r | -> red r < | ^
+red h | -> red h < | ^
+red | | -> red | < | ^
+red 0 | -> red x < | ^
+red 1 | -> nxWord 0 < | ^
+red _ | -> S _ > | ^
+
+nxWord 0 | -> nxWord 0 < | ^
+nxWord 1 | -> nxWord 1 < | ^
+nxWord r | -> nxWord r < | ^
+nxWord h | -> nxWord h < | ^
+nxWord | | -> red | < | ^
+nxWord _ | -> S _ > | ^
+
+cleanNums h | -> cleanNums _ > | ^
+cleanNums | | -> cleanNums _ > | ^
+cleanNums _ | -> backAns _ ^ | <
+
+backAns _ a -> backAns _ ^ a <
+backAns _ b -> backAns _ ^ b <
+backAns _ | -> backAns _ ^ | <
+backAns _ _ -> rmBorder _ ^ _ >
+
+rmBorder _ | -> prefRevNum _ ^ _ >
+
+prefRevNum _ a -> prefRevNum _ ^ a >
+prefRevNum _ b -> prefRevNum _ ^ b >
+prefRevNum _ | -> cpAns _ ^ | <
+prefRevNum _ 0 -> cleanTmp _ ^ _ >
+prefRevNum _ 1 -> cleanTmp _ ^ _ >
+
+cpAns _ a -> cpAns 0 > r <
+cpAns _ b -> cpAns 1 > r <
+cpAns _ _ -> rmAns | > _ >
+
+rmAns _ r -> rmAns _ ^ _ >
+rmAns _ | -> rmBorder _ ^ | ^
+
+cleanTmp _ 0 -> cleanTmp _ ^ _ >
+cleanTmp _ 1 -> cleanTmp _ ^ _ >
+cleanTmp _ _ -> rmLastBorder _ < _ ^
+
+rmLastBorder | _ -> finalBack _ < _ ^
+
+finalBack 0 _ -> finalBack 0 < _ ^
+finalBack 1 _ -> finalBack 1 < _ ^
+finalBack | _ -> finalBack | < _ ^
+finalBack _ _ -> AC _ > _ ^

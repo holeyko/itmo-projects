@@ -15,5 +15,17 @@
     <orderEntry type="module" module-name="info.kgeorgiy.java.advanced.mapper" />
     <orderEntry type="module" module-name="info.kgeorgiy.java.advanced.student" />
     <orderEntry type="module" module-name="info.kgeorgiy.java.advanced.walk" />
+    <orderEntry type="module" module-name="info.kgeorgiy.java.advanced.crawler" />
+    <orderEntry type="module" module-name="info.kgeorgiy.java.advanced.hello" />
+    <orderEntry type="module-library">
+      <library name="bank libs">
+        <CLASSES>
+          <root url="file://$MODULE_DIR$/solutions/lib" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+        <jarDirectory url="file://$MODULE_DIR$/solutions/lib" recursive="false" />
+      </library>
+    </orderEntry>
   </component>
 </module>

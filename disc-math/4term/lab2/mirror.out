@@ -1,0 +1,35 @@
+start: s
+accept: ac
+reject: rj
+blank: _
+s 0 -> s 0 >
+s 1 -> s 1 >
+s a -> s a >
+s b -> s b >
+s _ -> f _ <
+
+f a -> f a <
+f b -> f b <
+f 0 -> add0 a >
+f 1 -> add1 b >
+f _ -> re _ >
+
+add0 0 -> add0 0 >
+add0 1 -> add0 1 >
+add0 a -> add0 a >
+add0 b -> add0 b >
+add0 _ -> f a <
+
+add1 0 -> add1 0 >
+add1 1 -> add1 1 >
+add1 a -> add1 a >
+add1 b -> add1 b >
+add1 _ -> f b <
+
+re a -> re 0 >
+re b -> re 1 >
+re _ -> ret _ <
+
+ret 0 -> ret 0 <
+ret 1 -> ret 1 <
+ret _ -> ac _ >

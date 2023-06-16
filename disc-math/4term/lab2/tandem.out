@@ -1,0 +1,76 @@
+start: s
+accept: ac
+reject: rj
+blank: _
+s 0 -> prep0 _ >
+s 1 -> prep1 _ >
+
+prep0 0 -> prep0 0 >
+prep0 1 -> prep0 1 >
+prep0 _ -> add0 * >
+prep0 * -> add0 * >
+
+prep1 0 -> prep1 0 >
+prep1 1 -> prep1 1 >
+prep1 _ -> add1 * >
+prep1 * -> add1 * >
+
+add0 0 -> add0 0 >
+add0 1 -> add0 1 >
+add0 _ -> retS 0 <
+
+add1 0 -> add1 0 >
+add1 1 -> add1 1 >
+add1 _ -> retS 1 <
+
+retS 0 -> retS 0 <
+retS 1 -> retS 1 <
+retS * -> retS * <
+retS _ -> eq _ >
+
+eq 0 -> prepReq0 a >
+eq 1 -> prepReq1 b >
+eq * -> req_ * >
+
+prepReq0 0 -> prepReq0 0 >
+prepReq0 1 -> prepReq0 1 >
+prepReq0 * -> req0 * >
+
+prepReq1 0 -> prepReq1 0 >
+prepReq1 1 -> prepReq1 1 >
+prepReq1 * -> req1 * >
+
+req0 a -> req0 a >
+req0 b -> req0 b >
+req0 1 -> resAB 1 <
+req0 _ -> resAB _ <
+req0 0 -> prepNiceBack a <
+
+req1 a -> req1 a >
+req1 b -> req1 b >
+req1 0 -> resAB 0 <
+req1 _ -> resAB _ <
+req1 1 -> prepNiceBack b <
+
+req_ a -> req_ a >
+req_ b -> req_ b >
+req_ 0 -> rj 0 ^
+req_ 1 -> rj 1 ^
+req_ _ -> ac _ ^
+
+resAB a -> resAB 0 <
+resAB b -> resAB 1 <
+resAB 0 -> resAB 0 <
+resAB 1 -> resAB 1 <
+resAB * -> resAB * <
+resAB _ -> s _ >
+
+prepNiceBack a -> prepNiceBack a <
+prepNiceBack b -> prepNiceBack b <
+prepNiceBack * -> niceBack * <
+
+niceBack 0 -> niceBack 0 <
+niceBack 1 -> niceBack 1 <
+niceBack a -> eq a >
+niceBack b -> eq b >
+niceBack _ -> eq _ >

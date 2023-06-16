@@ -1,0 +1,16 @@
+start: s
+accept: ac
+reject: rj
+blank: _
+s _ -> test _ <
+s ( -> s ( >
+s ) -> fOp x <
+s x -> s x >
+
+fOp ( -> s x >
+fOp x -> fOp x <
+fOp _ -> rj _ ^
+
+test x -> test x <
+test _ -> ac _ ^
+test ( -> rj ( ^

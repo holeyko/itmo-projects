@@ -12,7 +12,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.*;
-import java.util.function.Consumer;
 
 /**
  * Tests base class.
@@ -25,22 +24,25 @@ public class BaseTest {
 
     protected String testMethodName;
 
+
     @Rule
-    public TestRule watcher = watcher(description -> {
-        testMethodName = description.getMethodName();
-        System.err.println("=== Running " + testMethodName);
-    });
+    public final TestRule watcher = new TestWatcher() {
+        private long startTime;
+
+        @Override
+        protected void starting(final Description description) {
+            startTime = System.currentTimeMillis();
+            testMethodName = description.getMethodName();
+            System.err.println("=== Running " + testMethodName);
+        }
+
+        @Override
+        protected void finished(final Description description) {
+            System.err.printf("    %s finished in %dms%n", testMethodName, System.currentTimeMillis() - startTime);
+        }
+    };
 
     public BaseTest() {
-    }
-
-    protected static TestWatcher watcher(final Consumer<Description> watcher) {
-        return new TestWatcher() {
-            @Override
-            protected void starting(final Description description) {
-                watcher.accept(description);
-            }
-        };
     }
 
     @SuppressWarnings({"unchecked", "unused"})

@@ -1,0 +1,55 @@
+start: f
+accept: ac
+reject: rj
+blank: _
+ 
+f 1 -> f 1 >
+f 0 -> f 0 >
+f a -> f a >
+f b -> f b >
+f + -> s + >
+ 
+s 0 -> s 0 >
+s 1 -> s 1 >
+s a -> sum a <
+s b -> sum b <
+s _ -> sum _ <
+ 
+sum 0 -> prep0 a <
+sum 1 -> prep1 b <
+sum + -> clean + ^
+ 
+prep0 0 -> prep0 0 <
+prep0 1 -> prep0 1 <
+prep0 + -> sum0 + <
+sum0 a -> sum0 a <
+sum0 b -> sum0 b <
+sum0 0 -> f a ^
+sum0 1 -> f b ^
+sum0 _ -> f a ^
+ 
+prep1 0 -> prep1 0 <
+prep1 1 -> prep1 1 <
+prep1 + -> firstsum1 + <
+firstsum1 a -> firstsum1 a <
+firstsum1 b -> firstsum1 b <
+firstsum1 0 -> f b ^
+firstsum1 1 -> sum1 a <
+firstsum1 _ -> f b ^
+sum1 0 -> f 1 ^
+sum1 1 -> sum1 0 <
+sum1 _ -> f 1 ^
+ 
+clean + -> clean x >
+clean a -> clean x >
+clean b -> clean x >
+clean _ -> return _ <
+return x -> return _ <
+return 0 -> return 0 <
+return 1 -> return 1 <
+return a -> return 0 <
+return b -> return 1 <
+return _ -> rmzeros _ >
+rmzeros 0 -> rmzeros _ >
+rmzeros 1 -> ac 1 ^
+rmzeros _ -> ac 0 ^

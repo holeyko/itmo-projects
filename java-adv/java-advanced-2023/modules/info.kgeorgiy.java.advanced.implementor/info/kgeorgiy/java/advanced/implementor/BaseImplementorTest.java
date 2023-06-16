@@ -105,7 +105,7 @@ public class BaseImplementorTest extends BaseTest {
                 Assert.assertFalse("You may not implement " + clazz, shouldFail);
             } catch (final ImplerException e) {
                 if (shouldFail) {
-                    return;
+                    continue;
                 }
                 throw new AssertionError("Error implementing " + clazz, e);
             } catch (final Throwable e) {

@@ -50,29 +50,29 @@ public class ScalarIPTest<P extends ScalarIP> extends BaseIPTest<P> {
 
     @Test
     public void test10_sleepPerformance() throws InterruptedException {
-        testPerformance("maximum", 50, 10, 1, 1.5, (instance, threads, values) ->
+        testPerformance("maximum", MAX_THREADS, 3, 1, 1.5, (instance, threads, values) ->
                 instance.maximum(threads, values, (o1, o2) -> sleep(Integer.compare(o1, o2))));
-        testPerformance("count", 100, 10, 0, 1.5, (instance, threads, values) ->
+        testPerformance("count", MAX_THREADS, 5, 0, 1.5, (instance, threads, values) ->
                 instance.count(threads, values, v -> sleep(v % 3 == 1)));
     }
 
     @Test
     public void test11_burnPerformance() throws InterruptedException {
-        testPerformance("maximum", 100 * PROCESSORS, PROCESSORS, 1, 1.5, (instance, threads, values) ->
+        testPerformance("maximum", PROCESSORS, 50, 1, 1.5, (instance, threads, values) ->
                 instance.maximum(threads, values, (o1, o2) -> burn(Integer.compare(o1, o2))));
-        testPerformance("count", 100 * PROCESSORS, PROCESSORS, 0, 1.5, (instance, threads, values) ->
+        testPerformance("count", PROCESSORS, 50, 0, 1.5, (instance, threads, values) ->
                 instance.count(threads, values, v1 -> burn(v1 % 3 == 1)));
     }
 
     protected void testPerformance(
             final String name,
-            final int size,
             final int threads,
+            final int sizeMultiplier,
             final int sequentialWeight,
             final double delta,
             final ConcurrentConsumer<P, Integer, List<Integer>> consumer
     ) throws InterruptedException {
-        new PerformanceTest(name, threads, sequentialWeight, consumer).test(size, delta);
+        new PerformanceTest(name, threads, sequentialWeight, consumer).test(sizeMultiplier * threads, delta);
     }
 
     protected int getSubtasks(final int threads, final int totalThreads) {
@@ -81,7 +81,7 @@ public class ScalarIPTest<P extends ScalarIP> extends BaseIPTest<P> {
 
     protected static <T> T sleep(final T result) {
         try {
-            Thread.sleep(100);
+            Thread.sleep(50);
         } catch (final InterruptedException e) {
             e.printStackTrace();
             Thread.currentThread().interrupt();
@@ -102,7 +102,7 @@ public class ScalarIPTest<P extends ScalarIP> extends BaseIPTest<P> {
 
 
     protected class PerformanceTest {
-        private static final int WARMUP_CYCLES = 5;
+        private static final int WARMUP_CYCLES = 3;
 
         private final String name;
         private final int threads;

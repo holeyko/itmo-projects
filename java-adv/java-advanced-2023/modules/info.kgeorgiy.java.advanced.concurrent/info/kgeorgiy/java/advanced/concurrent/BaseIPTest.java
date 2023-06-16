@@ -1,6 +1,7 @@
 package info.kgeorgiy.java.advanced.concurrent;
 
 import info.kgeorgiy.java.advanced.base.BaseTest;
+
 import org.junit.Assert;
 
 import java.util.Collections;
@@ -19,6 +20,8 @@ import java.util.stream.Stream;
  */
 public class BaseIPTest<P extends ScalarIP> extends BaseTest {
     public static final List<Integer> SIZES = List.of(10_000, 5, 2, 1);
+    public static final int MAX_THREADS = 10;
+
     private final Random random = new Random(4875043285743285204L);
     protected List<Integer> factors = Collections.singletonList(0);
 
@@ -33,8 +36,8 @@ public class BaseIPTest<P extends ScalarIP> extends BaseTest {
                 final List<Integer> data = randomList(n);
                 for (final Named<U> named : cases) {
                     final T expected = fExpected.apply(data, named.value);
-                    System.err.print("        " + named.name + ", threads: ");
-                    for (int threads = 1; threads <= 10; threads++) {
+                    System.err.print("        " + named.name + ", threads:");
+                    for (int threads = 1; threads <= MAX_THREADS; threads++) {
                         System.err.print(" " + threads);
                         Assert.assertEquals(threads + " threads", expected, fActual.apply(instance, threads, data, named.value));
                     }

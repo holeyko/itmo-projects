@@ -1,0 +1,202 @@
+start: s
+accept: ac
+reject: rj
+blank: _
+s 0 -> FbeginBorder 0 <
+s 1 -> FbeginBorder 1 <
+
+FbeginBorder _ -> FinitAns / <
+
+FinitAns _ -> FinitMul 1 <
+
+FinitMul _ -> FcheckZero * >
+
+FcheckZero / -> FcheckZero / >
+FcheckZero h -> FcheckZero h >
+FcheckZero * -> FcheckZero * >
+FcheckZero 0 -> FcheckZero 0 >
+FcheckZero 1 -> FstartCp 1 >
+FcheckZero _ -> FcleanAns _ <
+
+FstartCp 0 -> FstartCp 0 >
+FstartCp 1 -> FstartCp 1 >
+FstartCp * -> FstartCp * >
+FstartCp h -> FstartCp h >
+FstartCp / -> FstartCp / >
+FstartCp _ -> Fcp _ <
+FstartCp a -> Fcp a <
+FstartCp b -> Fcp b <
+
+Fcp 0 -> FprCp0 a <
+Fcp 1 -> FprCp1 b <
+Fcp / -> FprMul / <
+
+FprCp0 0 -> FprCp0 0 <
+FprCp0 1 -> FprCp0 1 <
+FprCp0 / -> FprCp0 / <
+FprCp0 h -> FprCp0 h <
+FprCp0 * -> Fcp0 * <
+
+FprCp1 0 -> FprCp1 0 <
+FprCp1 1 -> FprCp1 1 <
+FprCp1 / -> FprCp1 / <
+FprCp1 h -> FprCp1 h <
+FprCp1 * -> Fcp1 * <
+
+Fcp0 0 -> Fcp0 0 <
+Fcp0 1 -> Fcp0 1 <
+Fcp0 _ -> FstartCp 0 >
+
+Fcp1 0 -> Fcp1 0 <
+Fcp1 1 -> Fcp1 1 <
+Fcp1 _ -> FstartCp 1 >
+
+FprMul h -> FprMul h <
+FprMul * -> FprMul * <
+FprMul 0 -> FprMul 0 <
+FprMul 1 -> FprMul 1 <
+FprMul _ -> sep _ ^
+
+
+
+sep _ -> firZero | <
+
+firZero _ -> prMul 0 >
+
+prMul 0 -> prMul 0 >
+prMul 1 -> prMul 1 >
+prMul | -> prMul | >
+prMul * -> prMul * >
+prMul / -> mul / <
+prMul h -> mul h <
+
+mul 0 -> mul x <
+mul 1 -> fdZero y >
+mul * -> prRemNum * >
+
+fdZero x -> prAddZero y <
+fdZero y -> fdZero y >
+fdZero 0 -> fdZero 0 >
+fdZero 1 -> fdZero 1 >
+fdZero a -> fdZero a >
+fdZero b -> fdZero b >
+fdZero | -> fdZero | >
+fdZero * -> fdZero * >
+fdZero / -> prAddNum / <
+fdZero h -> prAddNum h <
+
+prAddZero y -> prAddZero y <
+prAddZero 0 -> prAddZero 0 <
+prAddZero 1 -> prAddZero 1 <
+prAddZero * -> prAddZero * <
+prAddZero | -> addZero | <
+
+addZero a -> addZero a <
+addZero b -> addZero b <
+addZero 0 -> fdZero a >
+addZero 1 -> fdZero b >
+addZero _ -> fdZero a >
+
+prAddNum y -> prAddNum x <
+prAddNum 0 -> prAddNum 0 <
+prAddNum 1 -> prAddNum 1 <
+prAddNum * -> add * <
+
+add 0 -> prAdd0 a <
+add 1 -> prAdd1 b <
+add a -> add a <
+add b -> add b <
+add | -> prEndAdd | <
+
+prAdd0 0 -> prAdd0 0 <
+prAdd0 1 -> prAdd0 1 <
+prAdd0 | -> add0 | <
+
+prAdd1 0 -> prAdd1 0 <
+prAdd1 1 -> prAdd1 1 <
+prAdd1 | -> add1 | <
+
+add0 0 -> retAdd a >
+add0 1 -> retAdd b >
+add0 a -> add0 a <
+add0 b -> add0 b <
+add0 _ -> retAdd a >
+
+add1 0 -> retAdd b >
+add1 _ -> retAdd b >
+add1 1 -> addD1 a <
+add1 a -> add1 a <
+add1 b -> add1 b <
+
+addD1 0 -> retAdd 1 >
+addD1 1 -> addD1 0 <
+addD1 _ -> retAdd 1 >
+
+retAdd 0 -> retAdd 0 >
+retAdd 1 -> retAdd 1 >
+retAdd a -> retAdd a >
+retAdd b -> retAdd b >
+retAdd | -> retAdd | >
+retAdd * -> add * <
+
+prEndAdd 0 -> prEndAdd 0 <
+prEndAdd 1 -> prEndAdd 1 <
+prEndAdd a -> prEndAdd a <
+prEndAdd b -> prEndAdd b <
+prEndAdd _ -> endAdd _ >
+
+endAdd 0 -> endAdd 0 >
+endAdd 1 -> endAdd 1 >
+endAdd a -> endAdd 0 >
+endAdd b -> endAdd 1 >
+endAdd | -> endAdd | >
+endAdd * -> endAdd * >
+endAdd x -> mul x <
+endAdd / -> mul / <
+endAdd h -> mul h <
+
+prRemNum x -> prRemNum x >
+prRemNum / -> remNum / <
+prRemNum h -> remNum h <
+
+remNum x -> remNum h <
+remNum * -> remNum h <
+remNum 0 -> remNum h <
+remNum 1 -> remNum h <
+remNum a -> remNum h <
+remNum b -> remNum h <
+remNum | -> prClean h <
+
+prClean 0 -> prClean 0 <
+prClean 1 -> prClean 1 <
+prClean a -> prClean 0 <
+prClean b -> prClean 1 <
+prClean _ -> FbackMul * >
+
+
+
+FbackMul 0 -> FbackMul 0 >
+FbackMul 1 -> FbackMul 1 >
+FbackMul h -> FbackMul h >
+FbackMul / -> FbackMul / >
+FbackMul b -> FbackMul 1 >
+FbackMul a -> FbackMul 0 >
+FbackMul _ -> Fdec _ <
+
+Fdec 0 -> Fdec 1 <
+Fdec 1 -> FbeginCheck 0 <
+
+FbeginCheck 0 -> FbeginCheck 0 <
+FbeginCheck 1 -> FbeginCheck 1 <
+FbeginCheck / -> FcheckZero / >
+
+FcleanAns 0 -> FcleanAns _ <
+FcleanAns / -> FfinalClean _ <
+
+FfinalClean h -> FfinalClean _ <
+FfinalClean 0 -> FfinalClean 0 <
+FfinalClean 1 -> FfinalClean 1 <
+FfinalClean * -> FrmZeros _ >
+
+FrmZeros 0 -> FrmZeros _ >
+FrmZeros 1 -> ac 1 ^

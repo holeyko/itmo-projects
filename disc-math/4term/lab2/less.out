@@ -1,0 +1,55 @@
+start: s
+accept: ac
+reject: rj
+blank: _
+s _ -> ac _ ^
+s 0 -> prepCm0 _ >
+s 1 -> prepCm1 _ >
+s < -> check < >
+
+prepCm0 0 -> prepCm0 0 >
+prepCm0 1 -> prepCm0 1 >
+prepCm0 < -> cm0 < >
+
+prepCm1 0 -> prepCm1 0 >
+prepCm1 1 -> prepCm1 1 >
+prepCm1 < -> cm1 < >
+
+cm0 x -> cm0 x >
+cm0 _ -> rj _ ^
+cm0 g -> rj _ ^
+cm0 l -> rj _ ^
+cm0 0 -> back x <
+cm0 1 -> setG x >
+
+cm1 x -> cm1 x >
+cm1 _ -> rj _ ^
+cm1 g -> rj _ ^
+cm1 l -> rj _ ^
+cm1 0 -> setL x >
+cm1 1 -> back x <
+
+back 0 -> back 0 <
+back 1 -> back 1 <
+back x -> back x <
+back < -> back < <
+back _ -> s _ >
+
+setG 0 -> setG 0 >
+setG 1 -> setG 1 >
+setG _ -> back g <
+setG g -> back g <
+setG l -> back l <
+
+setL 0 -> setL 0 >
+setL 1 -> setL 1 >
+setL _ -> back l <
+setL g -> back g <
+setL l -> back l <
+
+check x -> check x >
+check 0 -> ac 0 ^
+check 1 -> ac 1 ^
+check g -> ac g ^
+check _ -> rj _ ^
+check l -> rj _ ^
